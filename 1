@@ -1,7 +1,9 @@
 local SansHubESP = {}
+
 function SansHubESP:AddESP(Child, Name, Color, Size, Title)
     local Billboard = Instance.new("BillboardGui", Child)
     local Text = Instance.new("TextLabel", Billboard)
+    local DistanceText = Instance.new("TextLabel", Billboard) -- 添加距离文本标签
     local Highlight = Instance.new('Highlight', Child)
     local UIStroke = Instance.new("UIStroke", Text)
     Billboard.AlwaysOnTop = true
@@ -27,11 +29,26 @@ function SansHubESP:AddESP(Child, Name, Color, Size, Title)
     Highlight.FillTransparency = 1
     Highlight.OutlineTransparency = 1
     Highlight.Name = Title
+    
+
+    DistanceText.AnchorPoint = Vector2.new(0.5, 0.5)
+    DistanceText.BackgroundTransparency = 1
+    DistanceText.BackgroundColor3 = Color3.new(0, 0, 0)
+    DistanceText.TextColor3 = Color
+    DistanceText.Font = "GothamSemibold"
+    DistanceText.TextSize = Size
+    DistanceText.Text = "[距离:]"
+    DistanceText.TextTransparency = 0
+    DistanceText.Visible = true
+    DistanceText.Size = UDim2.new(1, 0, 0, 0)
+    DistanceText.Position = UDim2.new(0.5, 0, 0.9, -35)
+    
     task.wait(0.25)
     game:GetService('TweenService'):Create(Highlight, TweenInfo.new(1), {
         FillTransparency = 0.9,
         OutlineTransparency = 0
     }):Play()
+    
     task.spawn(function()
         game:GetService("RunService").RenderStepped:Connect(function()
             if getgenv().RainbowESP then
@@ -43,6 +60,11 @@ function SansHubESP:AddESP(Child, Name, Color, Size, Title)
                 Highlight.FillColor = Color
                 Highlight.OutlineColor = Color
             end
+            
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local distance = (character.HumanoidRootPart.Position - Child.Position).Magnitude
+            DistanceText.Text = "[距离:] " .. math.floor(distance)
         end)
     end)
 end
