@@ -49,20 +49,26 @@ function SansHubESP:AddESP(Child, Name, Color, Size, Title)
         OutlineTransparency = 0
     }):Play()
     
-    -- 确保玩家的Character加载完成
-    local player = game.Players.LocalPlayer
-    local character = player.Character or wait() -- 使用wait()确保Character加载
-    player.CharacterAdded:Connect(function(newCharacter)
-        character = newCharacter
-    end)
-    
     task.spawn(function()
         game:GetService("RunService").RenderStepped:Connect(function()
+            if getgenv().RainbowESP then
+                Text.TextColor3 = Color3.fromHSV(tick() % 10 / 10, 1, 1)
+                Highlight.FillColor = Color3.fromHSV(tick() % 10 / 10, 1, 1)
+                Highlight.OutlineColor = Color3.fromHSV(tick() % 10 / 10, 1, 1)
+            else
+                Text.TextColor3 = Color
+                Highlight.FillColor = Color
+                Highlight.OutlineColor = Color
+            end
+            
+           
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
             if character and Child then
                 local distance = (character.HumanoidRootPart.Position - Child.Position).Magnitude
                 DistanceText.Text = "[距离:] " .. math.floor(distance)
             else
-                DistanceText.Text = "[距离:]"
+                DistanceText.Text = "[距离:]" .. math.floor(distance)
             end
         end)
     end)
