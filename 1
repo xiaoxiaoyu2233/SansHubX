@@ -30,7 +30,7 @@ function SansHubESP:AddESP(Child, Name, Color, Size, Title)
     Highlight.OutlineTransparency = 1
     Highlight.Name = Title
     
-
+    -- 设置距离文本标签的属性
     DistanceText.AnchorPoint = Vector2.new(0.5, 0.5)
     DistanceText.BackgroundTransparency = 1
     DistanceText.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -61,10 +61,15 @@ function SansHubESP:AddESP(Child, Name, Color, Size, Title)
                 Highlight.OutlineColor = Color
             end
             
+           
             local player = game.Players.LocalPlayer
             local character = player.Character or player.CharacterAdded:Wait()
-            local distance = (character.HumanoidRootPart.Position - Child.Position).Magnitude
-            DistanceText.Text = "[距离:] " .. math.floor(distance)
+            if character and Child then
+                local distance = (character.HumanoidRootPart.Position - Child.Position).Magnitude
+                DistanceText.Text = "[距离:] " .. math.floor(distance)
+            else
+                DistanceText.Text = "[距离:]"
+            end
         end)
     end)
 end
