@@ -1,9 +1,7 @@
 local SansHubESP = {}
-
-function SansHubESP:AddESP(Child, Name, Color, Size, Title, DistanceRef)
+function SansHubESP:AddESP(Child, Name, Color, Size, Title)
     local Billboard = Instance.new("BillboardGui", Child)
     local Text = Instance.new("TextLabel", Billboard)
-    local DistanceText = Instance.new("TextLabel", Billboard)
     local Highlight = Instance.new('Highlight', Child)
     local UIStroke = Instance.new("UIStroke", Text)
     Billboard.AlwaysOnTop = true
@@ -46,24 +44,6 @@ function SansHubESP:AddESP(Child, Name, Color, Size, Title, DistanceRef)
                 Highlight.OutlineColor = Color
             end
         end)
-    end)
-
-    DistanceText.AnchorPoint = Vector2.new(0.5, 0.5)
-    DistanceText.BackgroundTransparency = 1
-    DistanceText.BackgroundColor3 = Color3.new(0, 0, 0)
-    DistanceText.TextColor3 = Color
-    DistanceText.Font = "GothamSemibold"
-    DistanceText.TextSize = Size - 2
-    DistanceText.Text = "[距离: ]"
-    DistanceText.TextTransparency = 0
-    DistanceText.Visible = true
-    DistanceText.Size = UDim2.new(1, 0, 0, 20)
-    DistanceText.Position = UDim2.new(0.5, 0, 0.9, -10)
-
-
-    game:GetService("RunService").RenderStepped:Connect(function()
-        local distance = (Child.Position - DistanceRef.Position).Magnitude
-        DistanceText.Text = string.format("[距离: %.2f]", distance)
     end)
 end
 
